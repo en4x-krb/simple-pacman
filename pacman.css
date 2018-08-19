@@ -1,0 +1,93 @@
+#MainBoard{
+	position:relative;
+	border:10px double #5F9EA0;
+	width:840px;
+	height:510px;
+	border-collapse: collapse;
+	margin:0px auto;
+ }
+#MainBoard div{
+	float:left;	
+	width:30px;
+	height:30px;
+	box-sizing: border-box;
+}
+
+#pacImg{
+	position:absolute;
+	top:240px;
+	left:60px;
+	width:30px;
+	height:30px;
+}
+
+#monster1
+{
+	position:absolute;
+	top:240px;
+	left:390px;
+	width:30px;
+	height:30px;
+}
+#monster2
+{
+	position:absolute;
+	top:240px;
+	left:360px;
+	width:30px;
+	height:30px;
+}
+#monster3
+{
+	position:absolute;
+	top:210px;
+	left:360px;
+	width:30px;
+	height:30px;
+}
+
+#monster4
+{
+	position:absolute;
+	top:270px;
+	left:360px;
+	width:30px;
+	height:30px;
+}
+
+#logo{
+	width:99%;
+}
+#logo img{
+	display:block;
+	width:180px;
+	height:40px;
+	margin:0px auto;
+}
+#gameOver img{
+	display:block;
+	width:580px;
+	height:180px;
+	margin:0px auto;
+}
+
+#display{
+width:60%;
+margin:0px auto;
+}
+#display p{
+	display:inline;
+	font-size:30px;
+}
+#gameOver{
+	position:absolute;
+	top:150px;
+	width:99%;
+	visibility:hidden;
+}
+#gameOver img{
+	display:block;
+	width:580px;
+	height:180px;
+	margin:0px auto;
+}
