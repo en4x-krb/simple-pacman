@@ -535,3 +535,5 @@ const game = function() {
 };
 
 window.onload = game;
+
+alert('Use arrow keys to make PacMan move');
