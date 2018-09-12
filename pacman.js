@@ -1,6 +1,6 @@
-"use strict";
-
 const game = function() {
+	"use strict";
+
 	const boardRow = 17, boardCol = 28;
 
 	let start = false;
