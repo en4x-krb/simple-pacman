@@ -11,29 +11,33 @@
 -->
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>PacMan by AjKRB </title>
-<link rel="stylesheet" type="text/css" href="./pacman.css">  
-<script type="text/javascript" src="./pacman.js"> </script>
+	<title>PacMan by AjKRB </title>
+	<link rel="stylesheet" type="text/css" href="./pacman.css">
 </head>
-<body onLoad="drawBoard();">
-		<audio id="pacManSuper" preload="auto" src="./Sounds/super.mp3" ></audio>
-		<audio id="pacManDies" preload="auto" src="./Sounds/pacman_death.wav" > </audio>
-		<audio id="pacManEats" preload="auto" src="./Sounds/pacman_eatfruit.wav" > </audio>
-		<audio id="superPacAttacks" preload="auto" src="./Sounds/pacman_eatghost.wav" > </audio>
-		<audio id="pacManWins" preload="auto" src="./Sounds/pacman_win.wav" > </audio>
-		
-	
-	<div id="logo"><img src="./Images/PacManLogo.png"/></div>
-	
+
+<body>
+	<audio id="pacManSuper" preload="auto" src="./Sounds/super.mp3"></audio>
+	<audio id="pacManDies" preload="auto" src="./Sounds/pacman_death.wav"> </audio>
+	<audio id="pacManEats" preload="auto" src="./Sounds/pacman_eatfruit.wav"> </audio>
+	<audio id="superPacAttacks" preload="auto" src="./Sounds/pacman_eatghost.wav"> </audio>
+	<audio id="pacManWins" preload="auto" src="./Sounds/pacman_win.wav"> </audio>
+
+
+	<div id="logo"><img src="./Images/PacManLogo.png" /></div>
+
 	<div id="MainBoard"> </div>
 
-  <div id="display">
-		<p> Score : </p> <p id="score">0</p>
-  </div>
-	
-	<div id="gameOver">
-		<img id="gameOverText" alt="gameOver" src="./Images/gameoverwin.png"/>
+	<div id="display">
+		<p> Score : </p>
+		<p id="score">0</p>
 	</div>
+
+	<div id="gameOver">
+		<img id="gameOverText" alt="gameOver" src="./Images/gameoverwin.png" />
+	</div>
+	<script type="text/javascript" src="./pacman.js"> </script>
 </body>
+
 </html>
