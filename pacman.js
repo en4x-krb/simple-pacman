@@ -1,4 +1,4 @@
-const game = function() {
+const game = () => {
 	"use strict";
 
 	const boardRow = 17, boardCol = 28;
@@ -16,7 +16,7 @@ const game = function() {
 	let monsters = [];
 	
 	/*Special State Time*/
-	let ghostTime = 8000, superTime = 4000;
+	const ghostTime = 8000, superTime = 4000;
 	
 	let totalFood = 0;
 	
@@ -27,11 +27,12 @@ const game = function() {
 	
 	let newTop = 0, newLeft = 0;
 	let extraTop = 0, extraLeft  = 0;
-	
-	let boardObj;
-	
+		
 	let gameClock;
 	
+	const gameLoopInterval = 100;
+	const monstersOutMaxTime = 7000;
+
 	let superPacAttacks, pacManSuper, pacManDies, pacManEats, pacManWins;
 	
 	let pacBoard = [
@@ -57,29 +58,41 @@ const game = function() {
 	
 	const drawBoard = () => {
 	
+		let mainBoard = document.getElementById("MainBoard");
+		
+		mainBoard.innerHTML = "";
+
 		//Maze construction
-		document.getElementById("MainBoard").innerHTML="";
-		boardObj = document.getElementById("MainBoard");
 		for (let i = 0; i < boardRow; i++) {
 			for (let j = 0; j < boardCol; j++) {
+
+				let iconUrl = "";
+
+				switch(pacBoard[i][j]) {
+					case COOKIE:
+						iconUrl = "url('./Images/cookie.png')";
+						totalFood++;
+						break;
+
+					case WALL:
+						iconUrl = "url('./Images/bricks.jpg')";
+						break;
+
+					case POTION:
+						iconUrl = "url('./Images/potion.png')";
+						totalFood += 5;
+						break;
+
+					case GATE:
+						iconUrl = "url('./Images/oneway.jpg')";
+						break;
+				}
+	
 				let tiles = document.createElement("div");
-				tiles.id="r"+i+"c"+j;		
-				if ( pacBoard[i][j] == COOKIE ) {
-					tiles.style.backgroundImage = "url('./Images/cookie.png')";
-					totalFood++;
-				}
-	
-				else if( pacBoard[i][j] == WALL )
-					tiles.style.backgroundImage = "url('./Images/bricks.jpg')";
-	
-				else if( pacBoard[i][j] == POTION ){
-					tiles.style.backgroundImage = "url('./Images/potion.png')";
-					totalFood+=5;
-				}
-				else if( pacBoard[i][j] == GATE )
-					tiles.style.backgroundImage = "url('./Images/oneway.jpg')";
-	
-				boardObj.appendChild(tiles);
+				tiles.style.backgroundImage = iconUrl;
+				tiles.id=`r${i}c${j}`;
+
+				mainBoard.appendChild(tiles);
 			}
 		}
 		//Monsters creation
@@ -87,25 +100,16 @@ const game = function() {
 			let monster = document.createElement("img");
 			monster.src = `./Images/g${k}.gif`;
 			monster.id = `monster${k}`;
-			boardObj.appendChild(monster);
+			mainBoard.appendChild(monster);
 		}
 		
 		//Pacman creation
 		let pacman = document.createElement("img");
 		pacman.src = "./Images/pacman.gif";
 		pacman.id = "pacImg";
-		boardObj.appendChild(pacman);
+		mainBoard.appendChild(pacman);
 		
 		initialize();
-	}
-	
-	function initialize() {
-		pacMAN = new Actor('pacImg',  240, 60, 0, 0);
-		monsters[0] = new Actor('monster1', 240, 390, rightKey, 1000);
-		monsters[1] = new Actor('monster2', 240, 360, rightKey, 2000);
-		monsters[2] = new Actor('monster3', 210, 360, downKey, 3000);
-		monsters[3] = new Actor('monster4', 270, 360, upKey, 4500);
-		document.addEventListener("keydown", keyPress, true);
 	}
 	
 	class Actor {
@@ -122,24 +126,33 @@ const game = function() {
 			this.outOfSafehouse = false;
 		}
 	}
+
+	function initialize() {
+		pacMAN = new Actor('pacImg',  240, 60, 0, 0);
+		monsters[0] = new Actor('monster1', 240, 390, rightKey, 1000);
+		monsters[1] = new Actor('monster2', 240, 360, rightKey, 2000);
+		monsters[2] = new Actor('monster3', 210, 360, downKey, 3000);
+		monsters[3] = new Actor('monster4', 270, 360, upKey, 4500);
+		document.addEventListener("keydown", keyPress, true);
+	}
 	
 	function keyPress(event) {
 		pacMAN.moves[1] = pacMAN.moves[0];	//Store Previous Move at 2nd location
 		pacMAN.moves[0] = event.keyCode;	//Store New Move at the 1st location
 	
-		if (start == false) {
+		if (!start) {
 			pacManDies = document.getElementById("pacManDies"); 
 			pacManEats = document.getElementById("pacManEats"); 
 			pacManWins = document.getElementById("pacManWins"); 
 			pacManSuper = document.getElementById("pacManSuper"); 
 			superPacAttacks = document.getElementById("superPacAttacks"); 
 			start = true;
-			gameClock = setInterval(gameLoop,100);
+			gameClock = setInterval(gameLoop, gameLoopInterval);
 		}
 	}
 	
 	function gameLoop() {
-		clock += 100;
+		clock += gameLoopInterval;
 	
 		//Make PacMan move
 		//If 1st direction is valid, move in that direction, otherwise
@@ -167,14 +180,14 @@ const game = function() {
 			}
 		}
 	
-		if (clock > 7000) {
+		if (clock > monstersOutMaxTime) {
 			pacBoard[8][14] = WALL; //Closing the gate
-			clock=7000;
+			clock = monstersOutMaxTime;
 		}
 		
 		//SuperPacMan State
 		if (pacMAN.superman)
-			pacMAN.specialStateTime -= 100;
+			pacMAN.specialStateTime -= gameLoopInterval;
 	
 		if (pacMAN.specialStateTime <= 0 ) {
 			pacMAN.superman=false;
@@ -184,7 +197,7 @@ const game = function() {
 		//Ghosts State
 		for (let k = 0; k < 4; k++) {
 			if (monsters[k].ghost)
-				monsters[k].specialStateTime -= 100;
+				monsters[k].specialStateTime -= gameLoopInterval;
 	
 			if (monsters[k].specialStateTime <= 0 ) {
 				monsters[k].ghost = false;
@@ -280,13 +293,13 @@ const game = function() {
 	
 	//Function to calculate score and make pacman super-pacman if potion is consumed
 	function checkScore() {
-		let hasDot = document.getElementById("r"+newTop+"c"+newLeft).style.backgroundImage;
-		if (pacBoard[newTop][newLeft] == COOKIE && hasDot) {	//Tile has cookie
+		let hasFood = document.getElementById(`r${newTop}c${newLeft}`).style.backgroundImage;
+		if (pacBoard[newTop][newLeft] == COOKIE && hasFood) {	//Tile has cookie
 			score++;
 			pacManEats.play();
 		}
 	
-		else if (pacBoard[newTop][newLeft] == POTION && hasDot) {	//Tile has potion
+		else if (pacBoard[newTop][newLeft] == POTION && hasFood) {	//Tile has potion
 			score += 5;
 			document.getElementById("pacImg").style.filter = "invert(60%)";
 			pacMAN.superman = true;
@@ -296,7 +309,7 @@ const game = function() {
 	
 		document.getElementById("score").innerHTML = score;
 	
-		document.getElementById("r" + newTop + "c" + newLeft).style.backgroundImage = "";
+		document.getElementById(`r${newTop}c${newLeft}`).style.backgroundImage = "";
 		
 		if (score >= totalFood) {
 			pacManWins.play();
@@ -319,6 +332,7 @@ const game = function() {
 	
 		if(currTopPx % dimension == 0)
 			fitsTop = true;
+			
 		if(currLeftPx % dimension == 0)
 			fitsLeft = true;
 		
@@ -535,3 +549,4 @@ const game = function() {
 };
 
 window.onload = game;
+alert("Use arrow keys to make PacMan move");
