@@ -332,7 +332,7 @@ const game = () => {
 	
 		if(currTopPx % dimension == 0)
 			fitsTop = true;
-			
+
 		if(currLeftPx % dimension == 0)
 			fitsLeft = true;
 		
